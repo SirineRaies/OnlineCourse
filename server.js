@@ -2,18 +2,27 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const connectDB = require('./Config/DB');
-const app = express();
-app.use(express.json());
 const usersRoutes = require('./Routes/UserRoutes');
 const coursesRoutes = require('./Routes/CourseRoutes');
-const {notFound,errorHandler}=require('./Middleware/ErrorHandler.js')
-connectDB();
+const { notFound, errorHandler } = require('./Middleware/ErrorHandler.js');
 
+const app = express();
+app.use(express.json());
+
+// Routes
 app.use('/api/users', usersRoutes);
 app.use('/api/courses', coursesRoutes);
+
+// Middlewares
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(process.env.PORT,()=>{
-    console.log(`Le serveur est démarré sur le port ${process.env.PORT}`);
-})
+if (process.env.NODE_ENV !== 'test') {
+  connectDB();
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Serveur démarré sur le port ${PORT}`);
+  });
+}
+
+module.exports = app; 

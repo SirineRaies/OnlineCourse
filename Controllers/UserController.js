@@ -27,10 +27,9 @@ const getUserById = asyncHandler(async (req, res) => {
     res.status(200).json(user);
 });
 
-
 const createProfileByUserId = asyncHandler(async (req, res) => {
   const { userId } = req.params;
-  const { bio, location, phone } = req.body;
+  const { bio, website } = req.body;  // on n'utilise que les champs du schéma
 
   const user = await User.findById(userId);
   if (!user) {
@@ -44,7 +43,7 @@ const createProfileByUserId = asyncHandler(async (req, res) => {
     throw new Error('Le profil existe déjà pour cet utilisateur');
   }
 
-  const profile = await Profile.create({ user: userId, bio, location, phone });
+  const profile = await Profile.create({ user: userId, bio, website });
   res.status(201).json({ message: 'Profil créé avec succès', profile });
 });
 
@@ -62,11 +61,11 @@ const getProfileByUserId = asyncHandler(async (req, res) => {
 
 const updateProfileByUserId = asyncHandler(async (req, res) => {
   const { userId } = req.params;
-  const { bio, location, phone } = req.body;
+  const { bio, website } = req.body;  // on n'utilise que bio et website
 
   const profile = await Profile.findOneAndUpdate(
     { user: userId },
-    { bio, location, phone },
+    { bio, website },
     { new: true, runValidators: true }
   );
 
