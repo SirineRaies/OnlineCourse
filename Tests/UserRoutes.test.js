@@ -95,7 +95,7 @@ test('POST /api/users/:userId/profile → should fail if profile exists', async 
 
 test('GET /api/users/:userId/profile → should get profile', async () => {
   const user = await User.create({ username: 'u', email: 'u@test.com' });
-  const profile = await Profile.create({ user: user._id, bio: 'Bio', website: 'https://bio.com' });
+  await Profile.create({ user: user._id, bio: 'Bio', website: 'https://bio.com' });
 
   const res = await request(app).get(`/api/users/${user._id}/profile`);
   expect(res.statusCode).toBe(200);
@@ -112,7 +112,7 @@ test('GET /api/users/:userId/profile → should fail if profile not found', asyn
 
 test('PUT /api/users/:userId/profile → should update profile', async () => {
   const user = await User.create({ username: 'u', email: 'u@test.com' });
-  const profile = await Profile.create({ user: user._id, bio: 'Old', website: 'https://old.com' });
+  await Profile.create({ user: user._id, bio: 'Old', website: 'https://old.com' });
 
   const res = await request(app)
     .put(`/api/users/${user._id}/profile`)
