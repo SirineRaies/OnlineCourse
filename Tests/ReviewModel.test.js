@@ -2,19 +2,20 @@ const Review = require('../Models/Review');
 const Course = require('../Models/Course');
 const User = require('../Models/User')
 const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 require('dotenv').config();
 
+let mongoServer;
+
 beforeAll(async () => {
-  const uri = process.env.MONGO_URI ;
-  await mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  mongoServer = await MongoMemoryServer.create();
+  const uri = mongoServer.getUri();
+  await mongoose.connect(uri);
 });
 
 afterAll(async () => {
-  await mongoose.connection.db.dropDatabase();
-  await mongoose.connection.close();
+  await mongoose.disconnect();
+  await mongoServer.stop();
 });
 
 jest.setTimeout(20000);

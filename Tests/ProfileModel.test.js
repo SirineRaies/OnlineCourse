@@ -1,20 +1,22 @@
 const Profile = require('../Models/Profile');
 const User = require('../Models/User');
 const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 require('dotenv').config();
 
+
+let mongoServer;
+
 beforeAll(async () => {
-  const uri = process.env.MONGO_URI;
-  await mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-});
-afterAll(async () => {
-  await mongoose.connection.db.dropDatabase();
-  await mongoose.connection.close();
+  mongoServer = await MongoMemoryServer.create();
+  const uri = mongoServer.getUri();
+  await mongoose.connect(uri);
 });
 
+afterAll(async () => {
+  await mongoose.disconnect();
+  await mongoServer.stop();
+});
 jest.setTimeout(20000);
 
 test('should create a profile for a user', async () => {
