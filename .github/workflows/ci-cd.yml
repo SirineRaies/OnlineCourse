@@ -1,10 +1,7 @@
-name: CI - Backend Tests & Docker Build
+name: CI/CD Pipeline
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
@@ -44,3 +41,12 @@ jobs:
       # Construire l’image Docker
       - name: Build Docker image
         run: docker build -t onlinecourse-backend .
+
+  deploy:
+    needs: build-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Render Deployment
+        run: |
+          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
