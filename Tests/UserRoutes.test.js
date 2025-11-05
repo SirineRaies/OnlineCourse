@@ -118,7 +118,7 @@ test('PUT /api/users/:userId/profile → should update profile', async () => {
     .put(`/api/users/${user._id}/profile`)
     .send({
       bio: 'Updated',
-      website: 'https://new.com' // on met à jour seulement bio et website
+      website: 'https://new.com'
     });
 
   expect(res.statusCode).toBe(200);

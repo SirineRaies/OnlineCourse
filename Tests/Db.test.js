@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const connectDB = require('../Config/DB');
 require('dotenv').config();
 
-jest.setTimeout(30000); // Timeout global pour les tests
+jest.setTimeout(30000); 
 
 describe('MongoDB Connection', () => {
 
