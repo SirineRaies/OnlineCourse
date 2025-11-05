@@ -1,0 +1,15 @@
+services:
+  server:
+    build: .
+    image : onlinecourse-backend
+    container_name : onlinecourse-server
+    ports:
+      - "3000:3000"
+    networks:
+      - onlinecourse-network
+    env_file:
+      - .env
+
+networks:
+  onlinecourse-network:
+    driver: bridge
